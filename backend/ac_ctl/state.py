@@ -1,6 +1,6 @@
 import logging
 
-from django.db import OperationalError
+from django.db import OperationalError, ProgrammingError
 
 from backend.ac_ctl.models import State
 
@@ -77,4 +77,7 @@ class AcControlState:
     wx_grid_points = property(_get_wx_grid_points, _set_wx_grid_points)
 
 
-state = AcControlState()
+try:
+    state = AcControlState()
+except ProgrammingError:
+    state = None
