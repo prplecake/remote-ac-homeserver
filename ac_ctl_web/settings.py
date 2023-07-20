@@ -99,13 +99,24 @@ WSGI_APPLICATION = 'ac_ctl_web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if env.DB_ENGINE == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+elif env.DB_ENGINE == 'postgresql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env.DB_NAME,
+            'HOST': env.DB_HOST,
+            'PORT': env.DB_PORT,
+            'USER': env.DB_USER,
+            'PASSWORD': env.DB_PASS
+        }
+    }
 
 
 # Password validation
