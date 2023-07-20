@@ -13,7 +13,7 @@ const commitBranch = require('child_process')
 //   .execSync('git describe --tags --abbrev=0')
 //   .toString().trim();
 
-const repoUrl = 'https://github.com/prplecake/remote-ac-controller';
+const repoUrl = 'https://github.com/prplecake/remote-ac-homeserver';
 
 module.exports = {
   entry: {
