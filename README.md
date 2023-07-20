@@ -1,4 +1,4 @@
-# remote-ac-controller
+# remote-ac-homeserver
 
 The goal of this project is to create a device that can automate my
 IR-controllable AC units, either using a DHT sensor or over the internet
@@ -43,15 +43,15 @@ npm run build
 For "deployment" it would be better to use a reverse proxy like nginx.
 See [`dist/`][dist].
 
-[dist]: https://github.com/prplecake/remote-ac-controller/tree/master/dist
+[dist]: https://github.com/prplecake/remote-ac-homeserver/tree/master/dist
 
 This gets the web interface set up along with the DHT sensor. Learn how to set
 up lirc [on the wiki][lirc-wiki].
 
-[lirc-wiki]: https://github.com/prplecake/remote-ac-controller/wiki/lirc
+[lirc-wiki]: https://github.com/prplecake/remote-ac-homeserver/wiki/lirc
 
 ## see also
 
-- [circuit schematic](https://github.com/prplecake/remote-ac-controller/wiki/Schematic)
+- [circuit schematic](https://github.com/prplecake/remote-ac-homeserver/wiki/Schematic)
 - [frigidaire ac remote lirc config](https://gist.github.com/prplecake/71c4bc8584541cf7423b922b81733c3a)
 - [IRreceiver MCU code](https://github.com/prplecake/IRreceiver)
