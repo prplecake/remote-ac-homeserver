@@ -4,7 +4,8 @@ import {LatestSensorData} from "./LatestSensorData";
 import {fetchWeatherStation, fetchWxGridPoints} from "../api/remote-ac";
 import {LatestNWSObservation} from "./LatestNWSObservation";
 
-export function Header() {
+export function Header(props: any) {
+  const {toggleOptions} = props;
   const [weatherStation, setWeatherStation] = useState<string>("");
   const [wxGridPoints, setWxGridPoints] = useState<string>("");
 
@@ -22,7 +23,10 @@ export function Header() {
       <header className='header'>
         <Row xs={1} md={2}>
           <Col>
-        <p>remote-ac-controller</p>
+            <p>
+              remote-ac-controller<br/>
+              <a onClick={toggleOptions}>Options</a>
+            </p>
           </Col>
           <Col xs={9}>
             <LatestNWSObservation

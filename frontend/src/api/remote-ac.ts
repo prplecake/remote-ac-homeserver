@@ -116,8 +116,30 @@ export async function fetchWeatherStation() {
   );
 }
 
+export const postWeatherStation = async (payload: { weather_station: string }) => {
+  const options = {
+    method: "POST",
+    headers: new Headers({
+      "Content-Type": "application/json"
+    }),
+    body: JSON.stringify(payload)
+  }
+  return await fetch(`${BASE_API_URL}/api/app/state/weather_station`, options);
+};
+
 export async function fetchWxGridPoints() {
   return await fetch(BASE_API_URL + "/api/app/state/wx_grid_points").then(
     (response) => response.json()
   );
+}
+
+export const postWxGridPoints = async (payload: {wx_grid_points: string}) => {
+  const options = {
+    method: "POST",
+    headers: new Headers({
+      "Content-Type": "application/json"
+    }),
+    body: JSON.stringify(payload)
+  };
+  return await fetch(`${BASE_API_URL}/api/app/state/wx_grid_points`, options);
 }
