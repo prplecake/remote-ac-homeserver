@@ -7,7 +7,7 @@ class State(models.Model):
     wx_grid_points = models.TextField(blank=True)
 
     class Meta:
-        db_table = 'app_state'
+        db_table = "app_state"
 
 
 class DhtSensorData(models.Model):
@@ -16,5 +16,5 @@ class DhtSensorData(models.Model):
     humidity = models.FloatField()
 
     class Meta:
-        verbose_name = 'DHT Sensor Data'
+        verbose_name = "DHT Sensor Data"
         verbose_name_plural = verbose_name

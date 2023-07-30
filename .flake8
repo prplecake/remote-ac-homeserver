@@ -9,3 +9,4 @@ exclude =
     venv
 per-file-ignores =
     ac_ctl_web/settings.py:E501
+inline-quotes = double

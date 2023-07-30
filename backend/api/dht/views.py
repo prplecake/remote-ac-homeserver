@@ -14,41 +14,41 @@ logger = logging.getLogger(__name__)
 
 
 class DhtSensorDataViewSet(viewsets.ModelViewSet):
-    queryset = DhtSensorData.objects.all().order_by('-date')
+    queryset = DhtSensorData.objects.all().order_by("-date")
     serializer_class = DhtSensorDataSerializer
-    http_method_names = ['get']
+    http_method_names = ["get"]
 
 
 class DhtSensorGraphDataViewSet(viewsets.ModelViewSet):
     serializer_class = DhtSensorDataSerializer
-    http_method_names = ['get']
+    http_method_names = ["get"]
 
     def get_queryset(self):
-        logger.info('hello from the logger')
+        logger.info("hello from the logger")  # TODO
         logger.debug(self.request.query_params)
-        limit_param = self.request.query_params.get('limit')
-        if limit_param.endswith('d'):
+        limit_param = self.request.query_params.get("limit")
+        if limit_param.endswith("d"):
             logger.debug(limit_param[:-1])
             limit = 24 * int(limit_param[:-1])
-        elif limit_param.endswith('h'):
+        elif limit_param.endswith("h"):
             limit = int(limit_param[:-1])
         else:
             limit = 24 * 7
-        logger.debug(f'limit: {limit}')
+        logger.debug(f"limit: {limit}")
         queryset = DhtSensorData.objects.filter(
-            Q(date__contains=':00:')).order_by('-date')[:limit]
+            Q(date__contains=":00:")).order_by("-date")[:limit]
         logger.debug(len(queryset))
         queryset = list(reversed(queryset))
         return queryset
 
 
 class DhtSensorHistoricalDataViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get']
+    http_method_names = ["get"]
     pagination_class = HistoricalDataSetPagination
     serializer_class = DhtSensorDataSerializer
 
     def get_queryset(self):
-        queryset = DhtSensorData.objects.order_by('-date')
+        queryset = DhtSensorData.objects.order_by("-date")
         return queryset
 
 
@@ -56,9 +56,9 @@ class DhtSensorHistoricalDataViewSet(viewsets.ModelViewSet):
 def get_last_record(request):
     obj = DhtSensorData.objects.last()
     return Response({
-        'date': obj.date,
-        'temp_c': obj.temp_c,
-        'humidity': obj.humidity
+        "date": obj.date,
+        "temp_c": obj.temp_c,
+        "humidity": obj.humidity
     })
 
 
@@ -66,7 +66,7 @@ def get_last_record(request):
 def get_current_record(request):
     (temp_c, humidity, dht_error) = get_dht_data()
     return Response({
-        'temp_c': temp_c,
-        'humidity': humidity,
-        'error': dht_error
+        "temp_c": temp_c,
+        "humidity": humidity,
+        "error": dht_error
     })
