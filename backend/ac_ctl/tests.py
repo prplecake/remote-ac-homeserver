@@ -18,15 +18,15 @@ class DhtSensorDataTestCase(TestCase):
 
     def test_date_label(self):
         obj = DhtSensorData.objects.get(id=1)
-        field_label = obj._meta.get_field('date').verbose_name
-        self.assertEqual(field_label, 'date')
+        field_label = obj._meta.get_field("date").verbose_name
+        self.assertEqual(field_label, "date")
 
     def test_temp_c_label(self):
         obj = DhtSensorData.objects.get(id=1)
-        field_label = obj._meta.get_field('temp_c').verbose_name
-        self.assertEqual(field_label, 'temp c')
+        field_label = obj._meta.get_field("temp_c").verbose_name
+        self.assertEqual(field_label, "temp c")
 
     def test_humidity_label(self):
         obj = DhtSensorData.objects.get(id=1)
-        field_label = obj._meta.get_field('humidity').verbose_name
-        self.assertEqual(field_label, 'humidity')
+        field_label = obj._meta.get_field("humidity").verbose_name
+        self.assertEqual(field_label, "humidity")
