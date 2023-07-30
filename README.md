@@ -4,6 +4,10 @@ The goal of this project is to create a device that can automate my
 IR-controllable AC units, either using a DHT sensor or over the internet
 while I'm away.
 
+This is the "central server" part of the [remote-ac-controller] project.
+
+[remote-ac-controller]:https://github.com/prplecake/remote-ac-controller
+
 https://user-images.githubusercontent.com/83595468/212430312-2f6c45ab-76fd-4837-91fb-a6bcf532ea33.mp4
 
 ## quickstart
