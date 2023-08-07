@@ -10,7 +10,8 @@ on:
       - 'services/**'
       - 'utilities/**'
       - 'manage.py'
-      - 'requirements.txt'
+      - 'Pipfile'
+      - 'Pipfile.lock'
   pull_request:
     branches: [master]
     paths:
@@ -20,7 +21,8 @@ on:
       - 'services/**'
       - 'utilities/**'
       - 'manage.py'
-      - 'requirements.txt'
+      - 'Pipfile'
+      - 'Pipfile.lock'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
