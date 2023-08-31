@@ -51,9 +51,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
 
-    "webpack_loader",
-
-    "frontend",
     "backend.ac_ctl",
     "backend.api",
 ]
@@ -205,11 +202,3 @@ try:
     TEMP_LOW = env.TEMP_LOW
 except AttributeError:
     print("Please set TEMP_LOW in your env.py")
-
-# Webpack Config
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "BUNDLE_DIR_NAME": "frontend/",
-        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json")
-    }
-}
