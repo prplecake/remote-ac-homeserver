@@ -65,11 +65,17 @@ MIDDLEWARE = [
 ]
 
 try:
-    CORS_ALLOWED_ORIGINS = env.CORS_ALLOWED_ORIGINS
+    CORS_ALLOW_ALL_ORIGINS = env.CORS_ALLOW_ALL_ORIGINS
 except AttributeError:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000"
-    ]
+    CORS_ALLOW_ALL_ORIGINS = False
+
+if not CORS_ALLOW_ALL_ORIGINS:
+    try:
+        CORS_ALLOWED_ORIGINS = env.CORS_ALLOWED_ORIGINS
+    except AttributeError:
+        CORS_ALLOWED_ORIGINS = [
+            "http://localhost:3000"
+        ]
 
 ROOT_URLCONF = "ac_ctl_web.urls"
 
