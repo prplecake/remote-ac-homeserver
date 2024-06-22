@@ -1,7 +1,10 @@
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RemoteAc.Infrastructure.Context;
 
 namespace RemoteAc.Web.Api;
 
@@ -29,6 +32,17 @@ public class Program
             .CreateLogger();
         IHost? host = CreateHostBuilder(args).Build();
         ILogger? logger = Log.ForContext<Program>();
+        try
+        {
+            using var scope = host.Services.CreateScope();
+            using var context = (RemoteAcContext)scope.ServiceProvider.GetRequiredService(typeof(RemoteAcContext));
+            logger.Information("Attempting to apply migrations");
+            context.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            logger.Fatal(ex, "Unable to apply migrations");
+        }
         try
         {
             logger.Information("Starting web host");
