@@ -1,4 +1,6 @@
-﻿namespace RemoteAc.Core.Entities.Base;
+﻿using System.Runtime.Serialization;
+
+namespace RemoteAc.Core.Entities.Base;
 
 public class Entity
 {

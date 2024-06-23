@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using RemoteAc.Core.Entities;
 using RemoteAc.Core.Interfaces.Services;
+using RemoteAc.Web.Api.Models;
 
 namespace RemoteAc.Web.API2.Controllers.Api.v1;
 
@@ -38,7 +39,7 @@ public class AppStateController : Controller
         }
     }
     [HttpPatch]
-    public async Task<IActionResult> PatchAppState([FromBody]AppState updatedAppState)
+    public async Task<IActionResult> PatchAppState([FromBody]AppStateRequest updatedAppState)
     {
         _logger.Debug("PatchAppState got PATCH");
         // iterate through all of the properties of the update object

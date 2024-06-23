@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RemoteAc.Core.Entities;
 using RemoteAc.Core.Interfaces.Repositories;
 using RemoteAc.Core.Interfaces.Services;
+using RemoteAc.Web.Api.Filters;
 
 namespace RemoteAc.Web.Api.Services;
 
@@ -20,9 +22,12 @@ public class DhtSensorDataService : IDhtSensorDataService
         return await _repo.GetLatestRecord();
     }
     /// <inheritdoc />
-    public async Task<IEnumerable<DhtSensorData>> GetAll()
+    public async Task<IEnumerable<DhtSensorData>> GetAll(PaginationFilter? filter)
     {
         _logger.Debug("GetAll called");
-        return await _repo.GetAll();
+        return await _repo.GetAll(filter);
     }
+    public Task<int> GetTotalRecordsAsync() => _repo.GetTotalRecordsAsync();
+    public async Task<IEnumerable<DhtSensorData>> GetGraphData(PaginationFilter filter)
+        => await _repo.GetGraphData(filter);
 }

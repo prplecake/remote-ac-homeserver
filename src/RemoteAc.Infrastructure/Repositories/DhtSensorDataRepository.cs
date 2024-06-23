@@ -2,6 +2,7 @@
 using RemoteAc.Core.Entities;
 using RemoteAc.Core.Interfaces.Repositories;
 using RemoteAc.Infrastructure.Context;
+using RemoteAc.Web.Api.Filters;
 using Serilog;
 
 namespace RemoteAc.Infrastructure.Repositories;
@@ -34,9 +35,29 @@ public class DhtSensorDataRepository : IDhtSensorDataRepository
         return null;
     }
     /// <inheritdoc />
-    public async Task<IEnumerable<DhtSensorData>> GetAll()
+    public async Task<IEnumerable<DhtSensorData>> GetAll(PaginationFilter? filter)
     {
         _logger.Debug("GetAll called");
-        return await _context.DhtSensorData.OrderByDescending(d => d.Date).ToListAsync();
+        if (filter is null)
+            return await _context.DhtSensorData
+                .OrderByDescending(d => d.Date)
+                .ToListAsync();
+        var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+        return await _context.DhtSensorData
+            .OrderByDescending(d => d.Date)
+            .Skip((validFilter.PageNumber -1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToListAsync();
+    }
+    public Task<int> GetTotalRecordsAsync() => _context.DhtSensorData.CountAsync();
+    public async Task<IEnumerable<DhtSensorData>> GetGraphData(PaginationFilter filter)
+    {
+        _logger.Debug("GetGraphData called");
+        var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+        return await _context.DhtSensorData
+            .OrderByDescending(d => d.Date)
+            .Where(d => d.Date.Minute == 0)
+            .Take(validFilter.PageSize)
+            .ToListAsync();
     }
 }
