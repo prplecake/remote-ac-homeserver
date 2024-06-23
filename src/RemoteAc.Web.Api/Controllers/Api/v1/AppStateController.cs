@@ -21,7 +21,7 @@ public class AppStateController : Controller
     public async Task<IActionResult> GetAppState()
     {
         _logger.Debug("GetAppState got GET");
-        return Ok(_appState);
+        return Ok(new Response<AppState>(_appState.GetAppState()));
     }
     [HttpPost]
     [Route("ac_power/toggle")]
@@ -31,7 +31,7 @@ public class AppStateController : Controller
         try
         {
             _appState.AcUnitOn = !_appState.AcUnitOn;
-            return Ok(_appState);
+            return Ok(new Response<AppState>(_appState.GetAppState()));
         }
         catch (Exception ex)
         {
@@ -55,6 +55,6 @@ public class AppStateController : Controller
                 _appState.GetType().GetProperty(prop.Name)?.SetValue(_appState, prop.GetValue(updatedAppState));
             }
         }
-        return Ok(_appState);
+        return Ok(new Response<AppState>(_appState.GetAppState()));
     }
 }

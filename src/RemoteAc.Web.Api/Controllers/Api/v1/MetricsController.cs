@@ -1,5 +1,6 @@
 using System.Linq;
 using RemoteAc.Core.Interfaces.Services;
+using RemoteAc.Web.Api.Models;
 
 namespace RemoteAc.Web.Api.Controllers.Api.v1;
 
@@ -16,7 +17,7 @@ public class MetricsController(IDhtSensorDataService dhtSensorDataService) : Con
         _logger.Debug("GetHumidityAvg called");
         var result = (await dhtSensorDataService.GetAll())
             .Average(x => x.Humidity);
-        return Ok(result);
+        return Ok(new Response<double>(result));
     }
     [HttpGet]
     [Route("temperature_avg")]
@@ -25,7 +26,7 @@ public class MetricsController(IDhtSensorDataService dhtSensorDataService) : Con
         _logger.Debug("GetTemperatureAvg called");
         var result = (await dhtSensorDataService.GetAll())
             .Average(x => x.TempC);
-        return Ok(result);
+        return Ok(new Response<double>(result));
     }
     [HttpGet]
     [Route("humidity_max")]
@@ -34,7 +35,7 @@ public class MetricsController(IDhtSensorDataService dhtSensorDataService) : Con
         _logger.Debug("GetHumidityMax called");
         var result = (await dhtSensorDataService.GetAll())
             .Max(x => x.Humidity);
-        return Ok(result);
+        return Ok(new Response<double>(result));
     }
     [HttpGet]
     [Route("temperature_max")]
@@ -43,7 +44,7 @@ public class MetricsController(IDhtSensorDataService dhtSensorDataService) : Con
         _logger.Debug("GetTemperatureMax called");
         var result = (await dhtSensorDataService.GetAll())
             .Max(x => x.TempC);
-        return Ok(result);
+        return Ok(new Response<double>(result));
     }
     [HttpGet]
     [Route("humidity_min")]
@@ -52,7 +53,7 @@ public class MetricsController(IDhtSensorDataService dhtSensorDataService) : Con
         _logger.Debug("GetHumidityMin called");
         var result = (await dhtSensorDataService.GetAll())
             .Min(x => x.Humidity);
-        return Ok(result);
+        return Ok(new Response<double>(result));
     }
     [HttpGet]
     [Route("temperature_min")]
@@ -61,6 +62,6 @@ public class MetricsController(IDhtSensorDataService dhtSensorDataService) : Con
         _logger.Debug("GetTemperatureMin called");
         var result = (await dhtSensorDataService.GetAll())
             .Min(x => x.TempC);
-        return Ok(result);
+        return Ok(new Response<double>(result));
     }
 }

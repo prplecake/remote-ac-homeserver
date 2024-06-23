@@ -22,7 +22,7 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
         var result = await dhtSensorDataService.GetLastRecord();
         if (result is null)
             return NoContent();
-        return Ok(result);
+        return Ok(new Response<DhtSensorData>(result));
     }
     [HttpGet]
     [Route("get_data")]
@@ -32,7 +32,7 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
         var result = await dhtSensorDataService.GetAll();
         if (result is null)
             return NoContent();
-        return Ok(result);
+        return Ok(new Response<IEnumerable<DhtSensorData>>(result));
     }
     [HttpGet]
     [Route("graph_data")]
@@ -56,7 +56,7 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
         var result = await dhtSensorDataService.GetGraphData(filter);
         if (result is null)
             return NoContent();
-        return Ok(result);
+        return Ok(new Response<IEnumerable<DhtSensorData>>(result));
     }
     [HttpGet]
     [Route("historical_data")]
@@ -71,12 +71,11 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
         var result = await dhtSensorDataService.GetAll(validFilter);
         if (result is null)
             return NoContent();
-        var a = PagedResponse<IEnumerable<DhtSensorData>>
+        return Ok(PagedResponse<IEnumerable<DhtSensorData>>
             .Create(result,
                 validFilter,
                 await dhtSensorDataService.GetTotalRecordsAsync(),
                 uriService,
-                Request.Path.Value);
-        return Ok(a);
+                Request.Path.Value));
     }
 }
