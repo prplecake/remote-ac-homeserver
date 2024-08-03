@@ -62,6 +62,8 @@ public class Startup
         services.AddScoped<IDhtSensorDataService, DhtSensorDataService>();
         services.AddScoped<IRemoteControlService, RemoteControlService>();
 
+        services.AddHostedService<UdpListenerService>();
+
         services.AddHttpContextAccessor();
 
         services.AddSingleton<IUriService>(o =>
