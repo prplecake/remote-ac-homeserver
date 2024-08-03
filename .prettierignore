@@ -1,7 +1,0 @@
-venv
-*.md
-*.js
-*.json
-.babelrc
-.github
-*.html
