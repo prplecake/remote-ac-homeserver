@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RemoteAc.Core.Interfaces;
 using RemoteAc.Core.Interfaces.Repositories;
 using RemoteAc.Core.Interfaces.Services;
 using RemoteAc.Infrastructure.Repositories;
@@ -59,6 +60,7 @@ public class Startup
 
         services.AddScoped<IAppStateService, AppStateService>();
         services.AddScoped<IDhtSensorDataService, DhtSensorDataService>();
+        services.AddScoped<IRemoteControlService, RemoteControlService>();
 
         services.AddHttpContextAccessor();
 
