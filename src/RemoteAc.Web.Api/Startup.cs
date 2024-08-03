@@ -39,6 +39,7 @@ public class Startup
         {
             app.UseExceptionHandler("/Home/Error");
         }
+        app.UseCors("AllowAllOrigins");
         app.UseStatusCodePages();
         app.UseRouting();
         app.UseEndpoints(endpoints =>
@@ -98,6 +99,18 @@ public class Startup
             { Title = "Remote AC Controller API",
               Description = "The API for the remote AC controller.",
               Version = "v1" });
+        });
+
+        // CORS
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
         });
     }
 }
