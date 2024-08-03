@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using RemoteAc.Core.Entities;
 using RemoteAc.Core.Filters;
 using RemoteAc.Core.Interfaces.Services;
@@ -14,16 +12,6 @@ namespace RemoteAc.Web.Api.Controllers.Api.v1;
 public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriService uriService) : Controller
 {
     private static readonly ILogger _logger = Log.ForContext<DhtController>();
-    [HttpGet]
-    [Route("last_record")]
-    public async Task<IActionResult> GetLastRecord()
-    {
-        _logger.Debug("GetLastRecord called");
-        var result = await dhtSensorDataService.GetLastRecord();
-        if (result is null)
-            return NoContent();
-        return Ok(new Response<DhtSensorData>(result));
-    }
     [HttpGet]
     [Route("get_data")]
     public async Task<IActionResult> GetData()
@@ -43,13 +31,9 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
         if (limit is not null)
         {
             if (limit.EndsWith("d"))
-            {
                 limitInt = int.Parse(limit.TrimEnd('d')) * 24;
-            }
             else if (limit.EndsWith("h"))
-            {
                 limitInt = int.Parse(limit.TrimEnd('h'));
-            }
         }
 
         var filter = new PaginationFilter(1, limitInt);
@@ -77,5 +61,15 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
                 await dhtSensorDataService.GetTotalRecordsAsync(),
                 uriService,
                 Request.Path.Value));
+    }
+    [HttpGet]
+    [Route("last_record")]
+    public async Task<IActionResult> GetLastRecord()
+    {
+        _logger.Debug("GetLastRecord called");
+        var result = await dhtSensorDataService.GetLastRecord();
+        if (result is null)
+            return NoContent();
+        return Ok(new Response<DhtSensorData>(result));
     }
 }
