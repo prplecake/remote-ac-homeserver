@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RemoteAc.Core.Entities;
+using RemoteAc.Core.Filters;
 using RemoteAc.Core.Interfaces.Repositories;
 using RemoteAc.Core.Interfaces.Services;
-using RemoteAc.Web.Api.Filters;
 
 namespace RemoteAc.Web.Api.Services;
 

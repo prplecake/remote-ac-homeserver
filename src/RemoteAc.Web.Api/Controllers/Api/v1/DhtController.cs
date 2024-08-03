@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using RemoteAc.Core.Entities;
+using RemoteAc.Core.Filters;
 using RemoteAc.Core.Interfaces.Services;
-using RemoteAc.Web.Api.Filters;
 using RemoteAc.Web.Api.Models;
 
 namespace RemoteAc.Web.Api.Controllers.Api.v1;
@@ -65,7 +65,7 @@ public class DhtController(IDhtSensorDataService dhtSensorDataService, IUriServi
         _logger.Debug("GetHistoricalData called");
         PaginationFilter validFilter;
         if (filter is null)
-            validFilter = new PaginationFilter(1, 10);
+            validFilter = new PaginationFilter(1, 20);
         else
             validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var result = await dhtSensorDataService.GetAll(validFilter);

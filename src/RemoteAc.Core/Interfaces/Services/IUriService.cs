@@ -1,4 +1,4 @@
-using RemoteAc.Web.Api.Filters;
+using RemoteAc.Core.Filters;
 
 namespace RemoteAc.Core.Interfaces.Services;
 

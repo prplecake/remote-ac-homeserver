@@ -1,5 +1,5 @@
 ﻿using RemoteAc.Core.Entities;
-using RemoteAc.Web.Api.Filters;
+using RemoteAc.Core.Filters;
 
 namespace RemoteAc.Core.Interfaces.Repositories;
 

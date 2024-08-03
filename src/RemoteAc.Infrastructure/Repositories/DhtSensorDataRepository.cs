@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RemoteAc.Core.Entities;
+using RemoteAc.Core.Filters;
 using RemoteAc.Core.Interfaces.Repositories;
 using RemoteAc.Infrastructure.Context;
-using RemoteAc.Web.Api.Filters;
 using Serilog;
 
 namespace RemoteAc.Infrastructure.Repositories;

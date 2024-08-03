@@ -1,4 +1,4 @@
-namespace RemoteAc.Web.Api.Filters;
+namespace RemoteAc.Core.Filters;
 
 public class PaginationFilter
 {
@@ -7,7 +7,7 @@ public class PaginationFilter
     public PaginationFilter()
     {
         PageNumber = 1;
-        PageSize = 10;
+        PageSize = 20;
     }
     public PaginationFilter(int pageNumber, int pageSize)
     {
