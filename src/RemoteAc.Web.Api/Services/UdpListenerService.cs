@@ -26,10 +26,7 @@ public class UdpListenerService : BackgroundService
             _source = new CancellationTokenSource();
             _token = _source.Token;
 
-            while (_isPolling)
-            {
-                _client.BeginReceive(Recv, null);
-            }
+            _client.BeginReceive(Recv, null);
         }
         catch (TaskCanceledException ex)
         {
