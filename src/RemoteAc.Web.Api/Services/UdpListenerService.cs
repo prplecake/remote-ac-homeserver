@@ -1,30 +1,38 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RemoteAc.Core.Entities;
+using RemoteAc.Core.Interfaces.Services;
 
 namespace RemoteAc.Web.Api.Services;
 
 public class UdpListenerService : BackgroundService
 {
-    private static readonly ILogger _logger = Log.ForContext<UdpListenerService>();
+    private static readonly ILogger Logger = Log.ForContext<UdpListenerService>();
+    private readonly IHostApplicationLifetime _hostApplicationLifetime;
+
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+    private readonly IServiceProvider _serviceProvider;
     private UdpClient _client;
     private bool _isPolling;
     private CancellationTokenSource _source;
-    private CancellationToken _token;
-    private IHostApplicationLifetime _hostApplicationLifetime;
     private UdpState _state;
-    public UdpListenerService(IHostApplicationLifetime hostApplicationLifetime)
+    private CancellationToken _token;
+
+    public UdpListenerService(IHostApplicationLifetime hostApplicationLifetime, IServiceProvider serviceProvider)
     {
         _hostApplicationLifetime = hostApplicationLifetime;
+        _serviceProvider = serviceProvider;
     }
 
-    public struct UdpState
-    {
-        public UdpClient c;
-        public IPEndPoint ep;
-    }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _isPolling = true;
@@ -37,41 +45,78 @@ public class UdpListenerService : BackgroundService
         }
         catch (TaskCanceledException ex)
         {
-            _logger.Error(ex, "Application terminated.");
+            Logger.Error(ex, "Application terminated.");
         }
         finally
         {
             _source?.Dispose();
         }
     }
-    private void Recv(IAsyncResult ar)
-    {
-        IPEndPoint remoteIp = new IPEndPoint(IPAddress.Any, 9876);
-        byte[] received = _client.EndReceive(ar, ref remoteIp);
-        _client.BeginReceive(Recv, null);
-        string message = Encoding.UTF8.GetString(received);
-        _logger.Information($"Received: {message}");
-        ProcessMessage(message);
-    }
-    private void ProcessMessage(string message)
-    {
-        throw new NotImplementedException();
-    }
     private void OnShutdown()
     {
-        _logger.Information("Shutting down UDP listener service...");
+        Logger.Information("Shutting down UDP listener service...");
         _isPolling = false;
-        _client?.Dispose();
+        _client.Dispose();
+    }
+    private async Task ProcessMessage(string message)
+    {
+        Logger.Debug($"Processing: {message}");
+        var udpClientMessage = JsonSerializer.Deserialize<UdpClientMessage>(message, _jsonOptions);
+        Logger.Debug("Deserialized: {@udpClientMessage}", udpClientMessage);
+        if (udpClientMessage is null)
+        {
+            Logger.Error("Deserialized message is null.");
+            return;
+        }
+
+        switch (udpClientMessage.MessageType)
+        {
+            case "REGISTRATION":
+            {
+                // Create a scope to use SensorClientService
+                using var scope = _serviceProvider.CreateScope();
+                var sensorClientService = scope.ServiceProvider.GetRequiredService<ISensorClientService>();
+                try
+                {
+                    await sensorClientService.AddClient(udpClientMessage);
+                }
+                catch (ArgumentException ex)
+                {
+                    Logger.Error(ex, "Sensor client already exists.");
+                }
+                break;
+            }
+            default:
+                Logger.Error("Unknown message type: {MessageType}", udpClientMessage.MessageType);
+                break;
+        }
+    }
+    private async void Recv(IAsyncResult ar)
+    {
+        var remoteIp = new IPEndPoint(IPAddress.Any, 0);
+        var recvBytes = _client.EndReceive(ar, ref remoteIp);
+        Logger.Debug("Recv bytes from remote client: {RemoteIp}.", remoteIp);
+        _client.BeginReceive(Recv, null);
+        var message = Encoding.UTF8.GetString(recvBytes);
+        Logger.Debug($"Received: {message}");
+        await ProcessMessage(message);
     }
     public override Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.Information("Starting UDP listener service...");
-        _client = new UdpClient();
-        _client.Client.Bind(new IPEndPoint(IPAddress.Any, 9876));
+        Logger.Information("Starting UDP listener service...");
+        var listenEndPoint = new IPEndPoint(IPAddress.Any, 9876);
+        _client = new UdpClient(listenEndPoint);
         _state = new UdpState();
-        _state.c = _client;
-        _state.ep = listenEndPoint;
+        _state.Client = _client;
+        _state.EndPoint = listenEndPoint;
         _hostApplicationLifetime.ApplicationStopping.Register(OnShutdown);
+        Logger.Information("UDP listener service started.");
         return base.StartAsync(cancellationToken);
+    }
+
+    private struct UdpState
+    {
+        public UdpClient Client;
+        public IPEndPoint EndPoint;
     }
 }

@@ -4,7 +4,7 @@ using RemoteAc.Core.Entities;
 using RemoteAc.Core.Interfaces.Services;
 using RemoteAc.Web.Api.Models;
 
-namespace RemoteAc.Web.API2.Controllers.Api.v1;
+namespace RemoteAc.Web.Api.Controllers.Api.v1;
 
 [ApiController]
 [ApiVersion("1")]
