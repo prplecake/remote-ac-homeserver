@@ -13,6 +13,7 @@ public class RemoteAcContext : DbContext
     }
     public DbSet<AppState> AppState { get; set; }
     public DbSet<DhtSensorData> DhtSensorData { get; set; }
+    public DbSet<SensorClient> SensorClients { get; set; }
     /// <inheritdoc />
     override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
