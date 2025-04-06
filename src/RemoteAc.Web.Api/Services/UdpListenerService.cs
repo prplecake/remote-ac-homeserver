@@ -14,9 +14,16 @@ public class UdpListenerService : BackgroundService
     private CancellationTokenSource _source;
     private CancellationToken _token;
     private IHostApplicationLifetime _hostApplicationLifetime;
+    private UdpState _state;
     public UdpListenerService(IHostApplicationLifetime hostApplicationLifetime)
     {
         _hostApplicationLifetime = hostApplicationLifetime;
+    }
+
+    public struct UdpState
+    {
+        public UdpClient c;
+        public IPEndPoint ep;
     }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -26,7 +33,7 @@ public class UdpListenerService : BackgroundService
             _source = new CancellationTokenSource();
             _token = _source.Token;
 
-            _client.BeginReceive(Recv, null);
+            _client.BeginReceive(Recv, _state);
         }
         catch (TaskCanceledException ex)
         {
@@ -61,6 +68,9 @@ public class UdpListenerService : BackgroundService
         _logger.Information("Starting UDP listener service...");
         _client = new UdpClient();
         _client.Client.Bind(new IPEndPoint(IPAddress.Any, 9876));
+        _state = new UdpState();
+        _state.c = _client;
+        _state.ep = listenEndPoint;
         _hostApplicationLifetime.ApplicationStopping.Register(OnShutdown);
         return base.StartAsync(cancellationToken);
     }
