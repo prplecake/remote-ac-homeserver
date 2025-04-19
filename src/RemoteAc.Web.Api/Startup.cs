@@ -55,12 +55,17 @@ public class Startup
 
         services.ConfigureDatabase(_configuration);
 
+        // Repositories
         services.AddScoped<IAppStateRepository, AppStateRepository>();
         services.AddScoped<IDhtSensorDataRepository, DhtSensorDataRepository>();
+        services.AddScoped<ISensorClientRepository, SensorClientRepository>();
 
         services.AddScoped<IAppStateService, AppStateService>();
         services.AddScoped<IDhtSensorDataService, DhtSensorDataService>();
         services.AddScoped<IRemoteControlService, RemoteControlService>();
+        services.AddScoped<ISensorClientService, SensorClientService>();
+
+        services.AddHostedService<UdpListenerService>();
 
         services.AddHttpContextAccessor();
 

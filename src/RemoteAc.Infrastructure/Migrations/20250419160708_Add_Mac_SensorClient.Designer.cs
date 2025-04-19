@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RemoteAc.Infrastructure.Context;
 
@@ -10,9 +11,11 @@ using RemoteAc.Infrastructure.Context;
 namespace RemoteAc.Infrastructure.Migrations
 {
     [DbContext(typeof(RemoteAcContext))]
-    partial class RemoteAcContextModelSnapshot : ModelSnapshot
+    [Migration("20250419160708_Add_Mac_SensorClient")]
+    partial class Add_Mac_SensorClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");

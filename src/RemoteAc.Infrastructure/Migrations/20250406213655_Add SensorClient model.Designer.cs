@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RemoteAc.Infrastructure.Context;
 
@@ -10,9 +11,11 @@ using RemoteAc.Infrastructure.Context;
 namespace RemoteAc.Infrastructure.Migrations
 {
     [DbContext(typeof(RemoteAcContext))]
-    partial class RemoteAcContextModelSnapshot : ModelSnapshot
+    [Migration("20250406213655_Add SensorClient model")]
+    partial class AddSensorClientmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -44,15 +47,13 @@ namespace RemoteAc.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "timestamp");
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Humidity")
                         .HasColumnType("REAL");
 
                     b.Property<double>("TempC")
-                        .HasColumnType("REAL")
-                        .HasAnnotation("Relational:JsonPropertyName", "temperature");
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -70,10 +71,6 @@ namespace RemoteAc.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Hostname")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Mac")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
