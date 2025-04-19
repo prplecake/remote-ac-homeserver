@@ -6,6 +6,7 @@ public class SensorClient : Entity
 {
     public string Hostname { get; set; }
     public string Address { get; set; }
+    public string Mac { get; set; }
     public int Port { get; set; }
 
     public static implicit operator SensorClient(UdpClientMessage message)
@@ -13,6 +14,7 @@ public class SensorClient : Entity
         {
             Hostname = message.Hostname,
             Address = message.Address,
+            Mac = message.Mac,
             Port = message.Port
         };
 }

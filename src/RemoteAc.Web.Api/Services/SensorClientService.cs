@@ -35,10 +35,9 @@ public class SensorClientService : ISensorClientService
             throw new ArgumentException("Sensor client already exists");
         }
         if ((await _repo.GetClients())
-            .Any(x => x.Address == sensorClient.Address && x.Port == sensorClient.Port))
+            .Any(x => x.Mac == sensorClient.Mac))
         {
-            _logger.Error("Sensor client with address {Address} and port {Port} already exists", sensorClient.Address,
-                sensorClient.Port);
+            _logger.Error("Sensor client with MAC address {MacAddress} already exists", sensorClient.Mac);
             throw new ArgumentException("Sensor client already exists");
         }
         _repo.AddClient(sensorClient);
