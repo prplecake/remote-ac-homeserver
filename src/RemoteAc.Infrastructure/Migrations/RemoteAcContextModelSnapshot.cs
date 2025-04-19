@@ -44,13 +44,15 @@ namespace RemoteAc.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "timestamp");
 
                     b.Property<double>("Humidity")
                         .HasColumnType("REAL");
 
                     b.Property<double>("TempC")
-                        .HasColumnType("REAL");
+                        .HasColumnType("REAL")
+                        .HasAnnotation("Relational:JsonPropertyName", "temperature");
 
                     b.HasKey("Id");
 
@@ -68,6 +70,10 @@ namespace RemoteAc.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Hostname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Mac")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
