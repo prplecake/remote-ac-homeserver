@@ -10,25 +10,11 @@ import (
 	"time"
 )
 
-type UdpMessage struct {
-	Hostname    string `json:"hostname"`
-	Address     string `json:"address"`
-	Port        int    `json:"port"`
-	MessageType string `json:"mtype"`
-	Message     string `json:"message"`
-}
-
-type SensorData struct {
-	Temperature float64 `json:"temperature"`
-	Humidity    float64 `json:"humidity"`
-	Time        string  `json:"timestamp"`
-}
-
 func convert_fahrenheit_to_celcius(f float64) float64 {
 	return (f - 32) * 5 / 9
 }
 
-func main() {
+func main2() {
 	// Create a UDP address for the server
 	serverAddr, err := net.ResolveUDPAddr("udp", "localhost:9876")
 	if err != nil {
