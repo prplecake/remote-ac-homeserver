@@ -112,6 +112,7 @@ public class UdpListenerService : BackgroundService
     }
     private async void Recv(IAsyncResult ar)
     {
+        if (!_isPolling) return;
         var remoteIp = new IPEndPoint(IPAddress.Any, 0);
         var recvBytes = _client.EndReceive(ar, ref remoteIp);
         Logger.Debug("Recv bytes from remote client: {RemoteIp}.", remoteIp);
