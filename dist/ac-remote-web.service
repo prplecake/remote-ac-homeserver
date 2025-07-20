@@ -1,0 +1,17 @@
+[Unit]
+Description=ac-remote-web
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/remote-ac-controller
+ExecStart=/home/pi/remote-ac-controller/venv/bin/gunicorn ac_ctl_web.wsgi
+
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+TimeoutSec=15
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
