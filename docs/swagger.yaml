@@ -1,0 +1,33 @@
+definitions:
+  server.AppState:
+    properties:
+      acUnitOn:
+        type: boolean
+      weatherStation:
+        type: string
+      wxGridPoints:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/state:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the current state of the application
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.AppState'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get application state
+      tags:
+      - Application
+swagger: "2.0"

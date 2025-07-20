@@ -6,7 +6,9 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/swaggo/http-swagger/v2"
 
+	_ "github.com/prplecake/remote-ac-homeserver/docs"
 	"github.com/prplecake/remote-ac-homeserver/app"
 	"github.com/prplecake/remote-ac-homeserver/db"
 )
@@ -42,6 +44,11 @@ func (s *Server) routes() {
 	r := s.router
 	r.HandleFunc("/", s.handleIndex)
 
+	NewApiHandler(r.PathPrefix("/api").Subrouter(), s)
+
+	r.PathPrefix("/swagger").Handler(httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:" + s.config.App.Port + "/swagger/doc.json"),
+	)).Methods(http.MethodGet)
 	http.Handle("/", r)
 	log.Print("Routes initialized")
 }
