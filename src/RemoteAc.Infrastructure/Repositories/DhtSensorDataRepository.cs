@@ -43,11 +43,12 @@ public class DhtSensorDataRepository : IDhtSensorDataRepository
                 .OrderByDescending(d => d.Date)
                 .ToListAsync();
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-        return await _context.DhtSensorData
+        var data =  await _context.DhtSensorData
             .OrderByDescending(d => d.Date)
             .Skip((validFilter.PageNumber -1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
             .ToListAsync();
+        return data;
     }
     public Task<int> GetTotalRecordsAsync() => _context.DhtSensorData.CountAsync();
     public async Task<IEnumerable<DhtSensorData>> GetGraphData(PaginationFilter filter)
